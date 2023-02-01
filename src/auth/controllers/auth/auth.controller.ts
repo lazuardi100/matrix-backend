@@ -19,4 +19,13 @@ export class AuthController {
   getProfile(@Request() req){
     return req.user;
   }
+
+  @UseGuards(JwtAuthGuard)
+  @Get('check_login')
+  checkLogin(@Request() req){
+    return {
+      "status": 200,
+      "msg": "logged in"
+    };
+  }
 }

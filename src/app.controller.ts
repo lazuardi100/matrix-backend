@@ -1,6 +1,7 @@
-import { Controller, Get, Req, UseGuards } from '@nestjs/common';
+import { Controller, Get, Req, UseGuards, Post } from '@nestjs/common';
 import { AppService } from './app.service';
 import { JwtAuthGuard } from './auth/guards/jwt-auth.guard';
+import { findNumber } from './helpers/solver.helper';
 
 @Controller()
 export class AppController {
@@ -12,13 +13,19 @@ export class AppController {
   }
 
   @UseGuards(JwtAuthGuard)
-  @Get('solve_problem')
+  @Post('solve_problem')
   solveProblem(@Req() params){
-    const matrix = JSON.parse(params.body.matrix)
-    const findNumber = params.body.find_number
-    console.log(matrix[0]);
-    return {
-      status: 200
+    let matrix = []
+    try{
+      matrix = JSON.parse(params.body.matrix)
+    }catch{
+      return {
+        status: 400,
+        msg: "invalid format"
+      }
     }
+    const target = parseInt(params.body.find_number)
+
+    return findNumber(matrix, target)
   }
 }

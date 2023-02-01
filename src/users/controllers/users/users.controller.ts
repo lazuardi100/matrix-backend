@@ -25,7 +25,10 @@ export class UsersController {
     if (existingUser != null){
       throw new BadRequestException('Email already exist');
     }
-    return this.userService.createUser(createUserDto);
+    this.userService.createUser(createUserDto);
+    return {
+      "status": "ok"
+    }
   }
 
   @Get('delete/:id')
