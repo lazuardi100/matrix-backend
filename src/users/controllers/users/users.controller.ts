@@ -6,18 +6,6 @@ import { UsersService } from '../../services/users/users.service';
 export class UsersController {
   constructor(private readonly userService: UsersService) {}
   
-  @Get()
-  getUsers() {
-    return this.userService.getUsers();
-  }
-  
-  @Get('id/:id')
-  async findUsersById(@Param('id', ParseIntPipe) id: number) {
-    const existingUser = await this.userService.findUsersById(id);
-    
-    return existingUser
-  }
-  
   @Post('create')
   @UsePipes(ValidationPipe)
   async createUsers(@Body() createUserDto: CreateUserDto) {
@@ -29,10 +17,5 @@ export class UsersController {
     return {
       "status": "ok"
     }
-  }
-
-  @Get('delete/:id')
-  deleteUsersById(@Param('id', ParseIntPipe) id: number){
-    return this.userService.deleteUser(id)
   }
 }

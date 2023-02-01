@@ -20,9 +20,4 @@ export class User {
     default: '',
   })
   password: string;
-
-  @BeforeInsert()
-  async hashPwd(){
-    this.password = await bcrypt.hash(this.password, 10)
-  }
 }
