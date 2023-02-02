@@ -15,7 +15,7 @@ export class UsersService {
     createUserDto.password = hashPwd
 
     const newUser = this.userRepository.create(createUserDto);
-    console.log(newUser);
+
     return this.userRepository.save(newUser);
   }
 

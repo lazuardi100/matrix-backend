@@ -4,6 +4,7 @@ import { Repository } from 'typeorm';
 import { User } from '../../../entities/user.entity';
 import { UsersService } from '../../services/users/users.service';
 import { UsersController } from './users.controller';
+import { BadRequestException } from '@nestjs/common';
 
 describe('UsersController', () => {
   let controller: UsersController;
@@ -13,7 +14,13 @@ describe('UsersController', () => {
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
       controllers: [UsersController],
-      providers:[UsersService,{
+      providers:[{
+        provide: UsersService,
+        useValue: {
+          findByEmail: jest.fn((x)=>x),
+          createUser: jest.fn()
+        }
+      },{
         provide: getRepositoryToken(User),
         useValue: {
           create: jest.fn(),
@@ -38,13 +45,22 @@ describe('UsersController', () => {
 
   describe('Creating user', () => {
     it('should be bad request',async ()=>{
-      // jest.spyOn(service, 'findByEmail').mockResolvedValue(null)
-      const test = await controller.createUsers({
+      try{
+        await controller.createUsers({
+          email: "testing@mail.com",
+          password: "testing123"
+        })
+      }catch(error){
+        expect(error).toBeInstanceOf(BadRequestException)
+      }
+    })
+    it('should return ok', async () => {
+      jest.spyOn(service, 'findByEmail').mockResolvedValue(null)
+      const result = await controller.createUsers({
         email: "testing@mail.com",
         password: "testing123"
       })
-      
-      expect(test).toHaveBeenCalledWith({
+      expect(result).toMatchObject({
         "status": "ok"
       })
     })
