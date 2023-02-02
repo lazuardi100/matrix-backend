@@ -61,7 +61,17 @@ describe('AuthService', () => {
   describe('login access token', ()=>{
     it('should get token',async()=>{
       // jest.spyOn(jwtService,'sign').mockReturnValueOnce(()=>"123")
-      const testResult = await service.login('testing')
+      const testResult = await service.login('testing', true)
+      expect(testResult).toMatchObject({
+        access_token: "123"
+      })
+    })
+  })
+
+  describe('login web 3 access token', ()=>{
+    it('should get token',async()=>{
+      // jest.spyOn(jwtService,'sign').mockReturnValueOnce(()=>"123")
+      const testResult = await service.login('testing', false)
       expect(testResult).toMatchObject({
         access_token: "123"
       })

@@ -24,8 +24,13 @@ export class AuthService {
     return null
   }
 
-  async login (user: any){
-    const payload = {username: user.email, sub: user.id};
+  async login (user: any, is_web3: boolean){
+    let payload = {}
+    if (is_web3){
+      payload = {wallet_address: user}
+    }else{
+      payload = {username: user.email, sub: user.id};
+    }
     return {
       access_token: this.jwtService.sign(payload)
     }

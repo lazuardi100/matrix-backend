@@ -11,13 +11,13 @@ export class AuthController {
   @Post('login')
   async login(@Request() req){
     // console.log(req);
-    return this.authService.login(req.user);
+    return this.authService.login(req.user, false);
   }
 
-  @UseGuards(JwtAuthGuard)
-  @Get('profile')
-  getProfile(@Request() req){
-    return req.user;
+  @Post('login_web3')
+  async login_web3(@Request() req){
+    const wallet_address = req.body.wallet_address
+    return this.authService.login(wallet_address, true);
   }
 
   @UseGuards(JwtAuthGuard)
