@@ -1,7 +1,7 @@
 import { Controller, Get, Req, UseGuards, Post } from '@nestjs/common';
 import { AppService } from './app.service';
 import { JwtAuthGuard } from './auth/guards/jwt-auth.guard';
-import { findNumber } from './helpers/solver.helper';
+import { bruteForce } from './helpers/solver.helper';
 
 @Controller()
 export class AppController {
@@ -26,6 +26,6 @@ export class AppController {
     }
     const target = parseInt(params.body.find_number)
 
-    return findNumber(matrix, target)
+    return bruteForce(matrix, target)
   }
 }
